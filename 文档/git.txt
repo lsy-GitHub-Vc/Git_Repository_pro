@@ -1,0 +1,90 @@
+本地仓库
+    git中配置用户信息
+    git config --global user.name 用户名
+    git config --global user.email 邮箱名
+
+    目录变仓库(需要在该目录下)
+    git init
+
+    添加文件到仓库中
+    git add 文件
+    git commit -m "注释信息"  （提交）
+
+    查询当前仓库状态
+    git status
+    git diff   (可以查看修改的内容)
+
+
+    查看提交日志
+    git log
+    git log --pretty=oneline   (一行一行显示)
+
+    版本回退
+    git reset --hard HEAD^    (回退到上一版本)
+    git reset --hard HEAD^^    (回退到上上版本)
+    git reset --hard HEAD~10   (回退到上10版本)
+    git reset --hard 版本号    (具体回退版本)
+
+    记录每一次命令
+    git reflog
+
+    撤销到filename文件回到最后一次git commit或者git add时的状态
+    git checkout -- filename
+
+
+远程仓库
+    创建SSH Key
+    ssh-keygen -t rsa -C "注册的邮箱"
+    --ssh-keygen -t rsa -C "suliushy@163.com"（生成公钥和私钥）
+    记录.ssh 的目录位置 进入该目录下  （.ssh 下有 id_rsa 私钥 id_rsa.pub 公钥）
+    输入注册GitHub时的密码  （可能不需要）
+    复制公钥文件内内容（私钥也可以 最好用公钥 安全） 挂载到git官网
+
+
+    验证钥匙是否成功
+    ssh -T git@github.com
+
+    关联远程仓库
+    git remote add origin 远程地址（不是上面的URL哦）
+    ----git remote add origin git@github.com:lsy-GitHub-Vc/Git_repository
+
+
+    删除关联
+    git remote rm  origin
+
+
+    推送本地到远程
+    git push origin master   (注意：需要先把远程库内容拉到本地)
+
+    拉取远程仓库内容
+    git pull origin master --allow--unrelated-histories
+
+    克隆远程库
+    git clone 远程地址
+
+    创建一个.gitignore 将不需要推得文件名写到这里面 推送的时候就不会推送写的文件
+
+分支
+    创建一个分支
+    git branch 分支名 （本地库下）
+
+    查看分支
+    git tbranch
+
+    切换分支
+    git checkout 分支名
+
+    创建与切换同时进行
+    git checkout -b 分支名
+
+    合并分支（提交主轴master）
+    git merge 需要提交的分支名 （在主轴上操作）
+
+    在分支提交远程时第一次 git push  --set-upstream origin 分支名 以后 git push origin 分支名
+
+
+    删除分支
+    git     branch -d 分支名
+
+    删除远程分支
+    git  pusn origin :分支名

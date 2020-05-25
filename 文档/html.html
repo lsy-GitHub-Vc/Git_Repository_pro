@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>网页</title>
+    <!--内部样式-->
+    <style>
+        b{
+            color: red;
+        }
+        .p1{
+            display: inline-block;/*转换为内联块元素*/
+            width: 100px;
+            height: 30px;
+            /*background-color: magenta;*/
+            font-size: 15px;
+            text-align: center;/*字体对其方式*/
+            line-height: 30px;/"等于li的高度，可以让字体垂直居中"/
+        }
+        .p2{
+            color: #0000cc;
+            text-decoration: none;/*去线*/
+        }
+        /*按照这个顺序*/
+        a:link{
+            /*超链接初始状态*/
+        }
+        a:visited{
+            /*访问后状态*/
+        }
+        a:hover{
+            /*鼠标悬停时状态*/
+        }
+        a:active{
+            /*激活后状态*/
+        }
+    </style>
+    <!--外部样式-->
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+    <body>
+    <ul style="background-color: darkseagreen;" >
+        <li class="p1"><b><a href="#" class="p2">导航1</a></b></li>
+        <li class="p1"><b><a href="#" class="p2">导航2</a></b></li>
+        <li class="p1"><b><a href="#" class="p2">导航3</a></b></li>
+        <li class="p1"><b><a href="#" class="p2">导航4</a></b></li>
+        <li class="p1"><b><a href="#" class="p2">导航5</a></b></li>
+        <li class="p1"><b><a href="#" class="p2">导航6</a></b></li>
+        <li class="p1"><b><a href="#" class="p2">导航7</a></b></li>
+        <li class="p1"><b><a href="#" class="p2">导航8</a></b></li>
+    </ul>
+    <a name="mao1"></a><!--设置一个锚点-->
+    <h1>标题</h1>
+    <h2>标题</h2>
+    <h3>标题</h3>
+    <h4>标题</h4>
+    <h5>标题</h5>
+
+    <!--水平线-->
+        <hr/>
+
+    <!--字体加粗-->
+        <!--嵌入式样式-->
+        <b>字体加粗</b><br/>
+        <strong>字体加粗</strong><br/>
+
+    <!--字体倾斜-->
+        <em>字体倾斜</em><br/>
+        <i>字体倾斜</i>
+    <!--段落标签-->
+        <!--嵌入式样式-->
+        <p style="color:blue;">这是文章的第一个段落</p>
+        <p>这是文章的第二个段落</p>
+    <!--特殊符号-->
+        <p>这是文章的&nbsp;&nbsp;&nbsp;空格</p>
+        <p>这是文章圆角　　空格</p>
+        &gt;
+        &lt;
+        &quot;
+        &copy;
+        <br/>
+    <!--图像标签-->
+        <img src="测试html.png" height="400" width="400" alt="乱画" title="悬停乱画" ><br/>
+    <!--链接标签标签-->
+        <a href="https://www.baidu.com/" target="_blank">百度一下</a><br/>
+        <a href="一个图.png">艺术</a><br/>
+        <!--锚点链接-->
+        <a href="#mao1">跳转锚点</a>
+    <!--列表-->
+        <!--无序列表-->
+        <ul type="square">
+            <li>列表1</li>
+            <li>列表2</li>
+            <li>列表3</li>
+        </ul>
+        <!--有序列表-->
+        <ol type="A">
+            <li>列表1</li>
+            <li>列表2</li>
+            <li>列表3</li>
+        </ol>
+        <!--自定义列表-->
+        <dl>
+            <dt>列表1</dt>
+                <dd>列表1值1</dd>
+                <dd>列表1值2</dd>
+            <dt>列表2</dt>
+                <dd>列表2值1</dd>
+                <dd>列表2值2</dd>
+        </dl>
+    <!--表格-->
+        <table align="center" border="1" cellpadding="1" cellspacing="0" >
+            <tr>
+                <th>列名1</th>
+                <th>列名2</th>
+                <th>列名3</th>
+            </tr>
+            <tr align="center">
+                <td colspan="2">第一行第一列</td><!--跨了两列-->
+                <td>第一行第二列</td>
+            </tr>
+            <tr align="center">
+                <td>第二行第一列</td>
+                <td>第二行第二列</td>
+                <td rowspan="2">第二行第三列</td><!--跨了两行-->
+            </tr>
+            <tr align="center"  >
+                <td>第三行第一列</td>
+                <td>第三行第二列</td>
+            </tr>
+        </table>
+
+
+    </body>
+</html>

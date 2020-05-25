@@ -1,0 +1,160 @@
+ 一、数据库操作
+     1、创建数据库
+         语法：use 数据库名
+         注意：如果数据库不存在则创建 如果存在则切换到该数据库
+     2、删除数据库(需在要删除的数据库下)
+         语法：db.dropDatabase()
+     3、查看所有数据库
+         语法：show dbs
+         注意：如果以上面的方式创建了一个空的数据库这里是不显示的 需要添加一个集合才会显示
+     4、查看当前正在使用的数据库
+         语法：db 或 db.getName()
+     5、断开连接
+         语法：exit
+ 二、集合操作
+     1、查看当前数据库的所有集合
+        语法：show collections
+     2、创建集合
+         a、
+             语法：db.createCollection("集合名")
+             示例：db.createCollection("class")
+         b、
+             语法：db.集合名.insert(document)
+             示例：db.class.insert({name:"tom",age:12,gender:1,address:"北京",isDelete:0})
+         区别：前者创建的是一个空集合 后者如果集合不存在会创建一个集合添加了一个文档
+     3、删除集合
+         语法：db.集合名.drop()
+         示例：db.class.drop()
+ 三、文档操作
+     1、插入文档
+         a、使用insert()方法插入文档
+             语法：db.集合名.insert(document)
+             示例；插入一个：db.class.insert({name:"tom",age:12,gender:1,address:"北京",isDelete:0})
+             示例：插入多个：db.class.insert([{name:"tom",age:12,gender:1,address:"北京",isDelete:0},{name:"jr",age:11,gender:1,address:"上海",isDelete:0}])
+         b、使用save()方法插入文档
+             语法：db.集合名.save(document)
+             说明：如果不指定_id字段，save()方法类似于insert()方法。如果指定_id字段，则会更新_id字段的数据
+             示例：db.class.save({_id:ObjectId("59950962019723fe2a0d8d17"),name:"tom",age:20,gender:1,address:"北京",isDelete:0})
+     2、文档更新
+         a、使用update()更新已经存在的文档
+             语法：
+                 db.集合名.update(
+                     query,
+                     update,
+                     {
+                         upset:boolean,
+                         multi:boolean,
+                         WriteConcern:document
+                     }
+                 )
+             参数说明：
+                 query:update的查询条件，类似与sql里update语句中where后面的内容
+                 update：的对象和一些更新的操作符($set,$inc)等,$set直接更新，$inc在原有基础上累加后更新
+                 upset:可选，如果不存在update数据是否作为新数据插入，true为插入False为不插入 默认为False
+                 multi；可选，默认为False,只更新找到的第一条数据 如果为true则全部更新
+                 WriteConcern；可选，抛出异常的级别
+             示例：更改lilei的age
+                 db.class.update({name:"lilei"},{$set:{age:23}})
+                 db.class.update({name:"lilei"},{$inc:{age:26}}) 这个在原有的基础上累加 age更新为了49
+                 db.class.update({name:"lilei"},{$inc:{age:26}},{upset:true}) 所有叫lilei的都改了
+         b、save()方法通过传入的文档替换原有的文档
+             语法：
+                 db.集合名.save(
+                     document
+                     {
+                         WriteConcern:document
+                     }
+                 )
+             参数说明：
+                 docment:文档
+                 WriteConcern：异常级别
+     3、文档删除
+         语法：
+             db.集合名.remove(
+                 query,
+                 {
+                     justOne:boolean
+                     WriteConcern：document
+                 }
+             )
+         参数说明：
+             query:删除条件
+             justOne:为true或1时只删除匹配的第一条
+         说明：在执行remove()函数前最好先执行find()命令来判断执行条件是否存在
+     4、文档查询
+         a、find()方法
+             语法：db.集合名.find()
+             说明：查询集合下的所有文档
+         b、find()方法查询指定列
+             语法：
+                 db.集合名.find(
+                     query,
+                     {
+                         key:1,
+                         key:1
+                     }
+                 )
+             示例：查询男生的名字和年龄列
+                 db.class.find({gender:1},{name:1,age:1})
+                 不加条件查询某些列
+                 db.class.find({},{name:1,age:1})
+         c、pretty()方法以格式化的方式来显示文档
+             语法：db.集合名.find().pretty()
+         d、findOne()方法匹配第一条的结果
+             语法：db.集合名.findOne()
+     5、查询条件操作符
+         a、大于 -->  $gt
+             语法：db.集合名.find({key:{$gt:value}})
+             示例：age大于20的
+                 db.class.find({age:{$gt:20}})
+         b、大于等于 -->  $gte
+             语法：参考上面
+         c、小于 -->  $lt
+             语法：参考上面
+         d、小于等于 -->  $lte
+             语法：参考上面
+         e、大于等于和小于等于 -->  $gte 和 $lte
+             语法: db.集合名.find({key:{$gte:value,$lte:value}})
+         f、等于 -->  :
+         g、用_id进行查询
+             语法：db.集合名.find({"_id":ObjectId("id值")})
+         h、查询某个结果集的数据条数
+             语法：db.集合名.find().count()
+         i、查询某个字段值中是否包含另一个值
+             语法：db.集合名.find({key:/包含的值/})
+         j、查询某个字段值中是否以另一个值开头
+             语法：db.集合名.find({key:/^开头的值/})
+     6、条件查询的and和or
+         a、and条件
+             语法：db.集合名.find({条件1，条件2......条件n})
+             示例：db.集合名.find({gender:0,age:{$gt:16}})
+         b、or条件
+             语法：
+                 db.集合名.find(
+                     {
+                         $or:[条件1，条件2.......条件n]
+                     }
+                 )
+         c、联合使用
+             语法：
+                  db.集合名.find(
+                      {
+                          条件1，
+                          条件2，
+                          $or:[条件1，条件2.......条件n]
+                      }
+                 )
+     7、limit(),skip()
+         a、limit()
+             说明：读取指定数量的数据记录
+             示例：db.集合名.find().limit(3)
+         b、skip()
+             说明：跳过指定数量的数据
+             示例：db.集合名.find().skip(3)
+         c、联合使用
+             通常用这种方式实现分页
+             示例：db.集合名.find().skip(3).limit(3)
+     8、排序
+         语法：db.集合名.find().sort(key:1|-1)
+         示例：db.class.find().sort({age:1})
+         注意：1代表升序，-1代表降序
