@@ -76,3 +76,5 @@ def charToNumber(s):
     return reduce(numToNumber,list(map(charToNum,s)))
 
 print(charToNumber('345789'))
+
+#sdsds
