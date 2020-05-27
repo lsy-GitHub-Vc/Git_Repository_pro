@@ -9,6 +9,12 @@ s1 = lambda num1,num2:num1+num2
 
 print(s1(1,2))
 
+def binu (x,y):
+    return lambda: x*x+y*y  #lambda可以作为返回值
+
+po = binu(3,4)
+print(po)
+
 '''
 Python 中 map和reduce 的用法
 
