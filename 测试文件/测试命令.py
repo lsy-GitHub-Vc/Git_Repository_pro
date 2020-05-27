@@ -208,28 +208,6 @@ import functools
 
 
 
-from functools import reduce
-# print(reduce(addnum,range(100)))
-
-from collections.abc import Iterable
-
-def addnumber( str):
-    if isinstance(str,Iterable) is True:
-        return reduce(lambda x,y:x+y,list(map(lambda x:int(x),str)))
-    else:
-        print(str+" 不是一个可迭代对象")
-
-def addlist(str1):
-    if isinstance(str1,Iterable) is True:
-        listn = list()
-        i = 0
-        listz = list(map(lambda x:int(x),str1))
-        while len(listz) != 1:
-            listn.append(str(listz[i]+listz[i+1]))
-            listz.pop(i)
-        return "".join(listn)
-print(addnumber("123456789"))
-print(addlist("123456789"))
 
 import os
 print(os.name)#获取操作系统类型
@@ -237,20 +215,20 @@ print(os.name)#获取操作系统类型
 # print(os.environ.get("ALLUSERSPROFILE")) #获取某一环境变量的详细信息
 # print(os.curdir) #获取当前路径
 print(os.getcwd()) #当前运行路径
-print(os.listdir(r"E:\PyCharm\project_1\文档")) #路径下的所有文件
-# print(os.mkdir(r"E:\PyCharm\project_1\文档\qw.txt"))#创建文件夹
-# print(os.rmdir(r"E:\PyCharm\project_1\文档\qw.txt")) #删除文件夹
-print(os.stat(r"E:\PyCharm\project_1\文档\git.txt")) #文件类型
+print(os.listdir(r"E:\PyCharm\project\文档")) #路径下的所有文件
+# print(os.mkdir(r"E:\PyCharm\project\文档\qw.txt"))#创建文件夹
+# print(os.rmdir(r"E:\PyCharm\project\文档\qw.txt")) #删除文件夹
+print(os.stat(r"E:\PyCharm\project\文档\git.txt")) #文件类型
 # print(os.system("msconfig")) #打开某应用
 # print(os.system("ps -ef | grep PyCharm")) #执行系统路径
 print(os.path.abspath('.')) #当前绝对路径
 # print(os.path.join("E:\PyCharm\project_1\文档","qw.txt") #拼接路径
-print(os.path.split(r"E:\PyCharm\project_1\文档\git.txt")) #分割路径
-print(os.path.splitext(r"E:\PyCharm\project_1\文档\git.txt")) #获取文件扩展名
-print(os.path.dirname(r"E:\PyCharm\project_1\文档\git.txt"))
-print(os.path.basename(r"E:\PyCharm\project_1\文档\git.txt"))
-print(os.path.isdir(r"E:\PyCharm\project_1\文档")) #判断是否为文件
-print(os.path.isfile(r"E:\PyCharm\project_1\文档")) #判断文件是否存在
-print(os.path.isabs(r"E:\PyCharm\project_1\文档\git.txt")) #感觉是 是否为文件最底层的绝对路径
-print(os.path.exists(r"E:\PyCharm\project_1\文档")) #判断目录是否存在
-print(os.path.getsize(r"E:\PyCharm\project_1\文档\git.txt"))#文件字节
+print(os.path.split(r"E:\PyCharm\project\文档\git.txt")) #分割路径
+print(os.path.splitext(r"E:\PyCharm\project\文档\git.txt")) #获取文件扩展名
+print(os.path.dirname(r"E:\PyCharm\project\文档\git.txt"))
+print(os.path.basename(r"E:\PyCharm\project\文档\git.txt"))
+print(os.path.isdir(r"E:\PyCharm\project\文档")) #判断是否为文件
+print(os.path.isfile(r"E:\PyCharm\project\文档")) #判断文件是否存在
+print(os.path.isabs(r"E:\PyCharm\project\文档\git.txt")) #感觉是 是否为文件最底层的绝对路径
+print(os.path.exists(r"E:\PyCharm\project\文档")) #判断目录是否存在
+print(os.path.getsize(r"E:\PyCharm\project\文档\git.txt"))#文件字节

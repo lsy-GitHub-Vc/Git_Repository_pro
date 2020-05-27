@@ -34,15 +34,54 @@ print(isinstance((x for x in range(2)),Iterator)) #判断是否为迭代器
 
 
 #迭代器
-y = (x for x in range(3))
+y = (x for x in range(3))  #生成器
 print(next(y))
 print(next(y))
 print(next(y))
 
 #转成Iterator对象  其他类型也可以
-itr = iter([1,2,3,4,5])
+itr = iter([1,2,3,4,5])  #转化为一个可迭代对象 生成器
 print(next(itr))
 print(next(itr))
 print(next(itr))
 print(next(itr))
 print(next(itr))
+
+
+def yield_1():
+    for i in [1,2,3,4]:
+        yield i
+    print("----------------")
+    for j in [5,6,7]:
+        yield j
+    return "**********"
+
+y=yield_1()
+while True:
+    try:
+        print(y.send(None))  #以后send将取代next
+    except StopIteration as e:
+        print(e.value)   #return的值包含在异常StopIteration的value中
+        break
+
+
+def a():
+    print('aaa')
+    p1 = yield '123'
+    print('bbb')
+    if (p1 == 'hello'):
+        print('p1是send传过来的')
+    p2= yield '234'
+    print(p2)
+
+r = a()
+print(next(r))
+'''
+说一下执行的顺序，首先a()是个生成器；第一次执行要么next(r)要么r.send(None)，不能使用r.send('xxxxx')；这会报错的。
+第一次执行时next(r)时，首先打印出aaa,
+'''
+r.send('hello')
+'''
+然后遇到yield即跳出，然后执行r.send('hello')时，p1则被赋值为hello了，然后继续接着上次运行，下一步打印出bbb，
+然后打印出'p1是send传过来的',当再次遇到第二个yield时跳出，所以结果只打印了三行，后面的p2没有执行。
+'''

@@ -77,4 +77,93 @@ def charToNumber(s):
 
 print(charToNumber('345789'))
 
-#sdsds
+from functools import reduce
+# print(reduce(addnum,range(100)))
+
+from collections.abc import Iterable
+
+def addnumber( str):
+    if isinstance(str,Iterable) is True:
+        return reduce(lambda x,y:x+y,list(map(lambda x:int(x),str)))
+    else:
+        print(str+" 不是一个可迭代对象")
+
+def addlist(str1):
+    if isinstance(str1,Iterable) is True:
+        listn = list()
+        i = 0
+        listz = list(map(lambda x:int(x),str1))
+        while len(listz) != 1:
+            listn.append(str(listz[i]+listz[i+1]))
+            listz.pop(i)
+        return "".join(listn)
+print(addnumber("123456789"))
+print(addlist("123456789"))
+
+'''
+filter
+Python内建的filter()函数用于过滤序列。
+和map()类似，filter()也接收一个函数和一个序列。
+和map()不同的是，filter()把传入的函数依次作用于每个元素，然后根据返回值是True还是False决定保留还是丢弃该元素。
+'''
+#用filter求素数
+def _odd_iter():
+    n = 1
+    while True:
+        n = n + 2
+        yield n
+# 注意这是一个生成器，并且是一个无限序列。
+# 然后定义一个筛选函数：
+def _not_divisible(n):
+    return lambda x: x % n > 0
+#最后，定义一个生成器，不断返回下一个素数
+def primes():
+    yield 2
+    it = _odd_iter() # 初始序列
+    while True:
+        n = next(it) # 返回序列的第一个数
+        yield n
+        it = filter(_not_divisible(n), it) # 构造新序列
+# 这个生成器先返回第一个素数2，然后，利用filter()不断产生筛选后的新的序列。
+# 由于primes()也是一个无限序列，所以调用时需要设置一个退出循环的条件
+# 打印100以内的素数:
+for n in primes():
+    if n < 100:
+        print(n)
+    else:
+        break
+
+
+'''
+sorted()函数
+'''
+from operator import itemgetter
+# （1）对list排序
+#和list的sort函数一样吧
+#（2）sorted 这里面可以传一个参数 根据参数的规则排列
+print(sorted([1,4,-1,-5,6,0,-9],key=abs)) #根据绝对值排序
+print(sorted(['hello','My','Dad','gril'],key=str.upper)) #排序 自然是根据ASCLL排的 忽略大小写（都改成大写了）  规则的方法是根据列表里面的元素类型吧？
+print(sorted(['hello','My','Dad','gril'],key=str.upper,reverse=True)) #反向排序
+
+'''
+python中的operator.itemgetter函数
+operator.itemgetter函数
+operator模块提供的itemgetter函数用于获取对象的哪些维的数据，参数为一些序号。看下面的例子
+a = [1,2,3]
+b=operator.itemgetter(1)      //定义函数b，获取对象的第1个域的值
+b(a)
+2
+b=operator.itemgetter(1,0)  //定义函数b，获取对象的第1个域和第0个的值
+b(a)
+(2, 1)
+要注意，operator.itemgetter函数获取的不是值，而是定义了一个函数，通过该函数作用到对象上才能获取值。
+sorted函数用来排序，sorted(iterable[, cmp[, key[, reverse]]])
+其中key的参数为一个函数或者lambda函数。所以itemgetter可以用来当key的参数
+a = [('john', 'A', 15), ('jane', 'B', 12), ('dave', 'B', 10)]
+根据第二个域和第三个域进行排序
+sorted(students, key=operator.itemgetter(1,2))
+'''
+students = [('Bob', 75), ('Adam', 92), ('Bart', 66), ('Lisa', 88)]
+print(sorted(students, key=itemgetter(0)))
+print(sorted(students, key=lambda t: t[1]))
+
