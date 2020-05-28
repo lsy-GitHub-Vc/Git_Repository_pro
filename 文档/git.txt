@@ -82,6 +82,9 @@
 
     在分支提交远程时第一次 git push  --set-upstream origin 分支名 以后 git push origin 分支名
 
+    拉取远程分支
+    git branch --set-upstream-to=origin/分支名 分支名
+
 
     删除分支
     git     branch -d 分支名
