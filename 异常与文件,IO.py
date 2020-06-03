@@ -205,3 +205,101 @@ print(BI.getvalue().decode(encoding='utf-8'))
 print(BI.read(),BI.getvalue())
 BI.close()
 
+
+
+'''序列化：我们把变量从内存中变成可存储或传输的过程称之为序列化  在Python中叫pickling，
+在其他语言中也被称之为serialization，marshalling，flattening等等，都是一个意思
+序列化之后，就可以把序列化后的内容写入磁盘，或者通过网络传输到别的机器上。
+反过来，把变量内容从序列化的对象重新读到内存里称之为反序列化，即unpickling。'''
+
+#E:\PyCharm\project\测试文件\序列化测试文档
+
+import pickle
+#对象序列化 写入文件
+
+#dumps 和 dump   前一个应该传入一个对象，后一个可以传入两个参数 包含一个文件IO流的对象 可以同时写入文件
+
+pathseq = r'E:\PyCharm\project\测试文件\序列化测试文档'
+d = dict(name='Bob', age=20, score=88)
+
+#print(pickle.dumps(d))  #结果 b'\x80\x03}q\x00(X\x04\x00\x00\x00nameq\x01X\x03\x00\x00\x00Bobq\x02X\x03\x00\x00\
+                        # x00ageq\x03K\x14X\x05\x00\x00\x00scoreq\x04KXu.' 这些都是Python保存的对象内部信息。
+
+with open(pathseq,"wb") as fileseq:
+    pickle.dump(d,fileseq)
+
+
+#loads()和load() :当我们要把对象从磁盘读到内存时，可以先把内容读到一个bytes，然后用pickle.loads()方法反序列化出对象(和dumps对应)，
+# 也可以直接用pickle.load()方法从一个file-like Object中直接反序列化出对象。我们打开另一个Python命令行来反序列化刚才保存的对象：
+
+with open(pathseq,"rb") as filereadseq:
+    print(pickle.load(filereadseq))    #{'name': 'Bob', 'age': 20, 'score': 88}
+
+
+
+'''JSON:如果我们要在不同的编程语言之间传递对象，就必须把对象序列化为标准格式，比如XML，但更好的方法是序列化为JSON，
+    因为JSON表示出来就是一个字符串，可以被所有语言读取，也可以方便地存储到磁盘或者通过网络传输。JSON不仅是标准格式，
+    并且比XML更快，而且可以直接在Web页面中读取，非常方便。'''
+
+import json
+
+print(json.dumps(d))
+#由于JSON标准规定JSON编码是UTF-8，所以我们总是能正确地在Python的str与JSON的字符串之间转换。
+
+
+
+class Students(object):
+    def __init__(self,name,age,score):
+        self.name = name
+        self.age = age
+        self.score = score
+
+    # def __str__(self):
+    #     return "%s %s %s" % (self.name,self.age,self.score)     #御坂 18 90
+
+# def StuSeq(std):    #这样，Student实例首先被student2dict()函数转换成dict，然后再被顺利序列化为JSON：
+#     return {
+#         "name" : std.name,
+#         "age"  : std.age,
+#         "score": std.score
+#     }
+s = Students('baby',20,60)
+# print(json.dumps(s,default=StuSeq))
+#没有转换函数StuSeq的情况下  TypeError: Object of type Students is not JSON serializable
+
+'''误的原因是Student对象不是一个可序列化为JSON的对象。
+
+如果连class的实例对象都无法序列化为JSON，这肯定不合理！
+
+别急，我们仔细看看dumps()方法的参数列表，可以发现，除了第一个必须的obj参数外，dumps()方法还提供了一大堆的可选参数：
+
+https://docs.python.org/3/library/json.html#json.dumps
+
+这些可选参数就是让我们来定制JSON序列化。前面的代码之所以无法把Student类实例序列化为JSON，是因为默认情况下，dumps()方法不知道如何将Student实例变为一个JSON的{}对象。
+
+可选参数default就是把任意一个对象变成一个可序列为JSON的对象，我们只需要为Student专门写一个转换函数，再把函数传进去即可：'''
+
+#不过，下次如果遇到一个Teacher类的实例，照样无法序列化为JSON。我们可以偷个懒，把任意class的实例变为dict：
+
+print(json.dumps(s,default=lambda obj:obj.__dict__))
+
+'''
+因为通常class的实例都有一个__dict__属性，它就是一个dict，用来存储实例变量。也有少数例外，比如定义了__slots__的class。
+同样的道理，如果我们要把JSON反序列化为一个Student对象实例，loads()方法首先转换出一个dict对象，然后，
+我们传入的object_hook函数负责把dict转换为Student实例：'''
+
+def RevStuSeq(dic):
+    return Students(dic["name"],dic["age"],dic["score"])
+
+
+dic_str = '{"score":90,"name":"御坂","age":18}'
+#print(eval(dic_str)) #字符串的字典 转换为字典
+print(json.loads(dic_str,object_hook=RevStuSeq))     #这个就是Students的实例  用__str__打印出的实例中的属性：  御坂 18 90
+
+
+
+'''小结：Python语言特定的序列化模块是pickle，但如果要把序列化搞得更通用、更符合Web标准，就可以使用json模块。
+
+json模块的dumps()和loads()函数是定义得非常好的接口的典范。当我们使用时，只需要传入一个必须的参数。但是，
+当默认的序列化或反序列机制不满足我们的要求时，我们又可以传入更多的参数来定制序列化或反序列化的规则，
+既做到了接口简单易用，又做到了充分的扩展性和灵活性。'''
