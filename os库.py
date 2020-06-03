@@ -1,5 +1,9 @@
 import os
 #os包含了普遍的操作系统功能
+import shutil
+#这个算是os功能的补充模块
+print(shutil.copyfile(src="",dst=""))  #复制文件 两个路径吧  从哪儿到哪儿  我现在就知道这一个
+
 
 #获取操作系统类型   nt-->Windows  posix--> Linux Unix 或 Mac OS X
 print(os.name)

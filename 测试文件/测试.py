@@ -44,4 +44,3 @@ from gevent import monkey
 #     gevent.spawn(bar),
 # ])
 
-

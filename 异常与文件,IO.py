@@ -70,8 +70,8 @@ a+
 '''
 
 #例子
-path = r"E:\readw.txt"
-file1 = open(path,"r")
+# path = r"E:\readw.txt"
+# file1 = open(path,"r")
 
 #读文件
 #str1 = file1.read(10)  #不传参读全部  传参读字符数
@@ -95,7 +95,7 @@ file1 = open(path,"r")
 
 
 #写文件
-path1 = [r"E:\PyCharm\project_1\测试文件\wh.txt",r"E:\PyCharm\project_1\测试文件\wh1.txt"]
+path1 = [r"E:\PyCharm\project\测试文件\wh.txt",r"E:\PyCharm\project\测试文件\wh1.txt"]
 
 #file3 = open(path1,"w")
 
@@ -142,7 +142,7 @@ for j in path1:
 import pickle
 
 #对于数据为list tuple dict set的数据写入
-path2 = r"E:\PyCharm\project_1\测试文件\wh.txt"
+path2 = r"E:\PyCharm\project\测试文件\wh.txt"
 arrlist = [1,2,3,4,5,"This is the test file"]
 arrlist1 = {"a":"test","b":None}
 with open(path2,"wb") as file6:
@@ -154,3 +154,54 @@ with open(path2,"rb") as file7:
     print(pickle.load(file7))
 
 file7.close()
+
+'''StringIO,ByteIO :  很多时候，数据读写不一定是文件，也可以在内存中读写。 '''
+
+#StringIO    内存中读写Str
+
+from io import StringIO,BytesIO
+
+
+FStr = StringIO()
+
+with open(path1[1],"r+",encoding="utf-8") as file8:
+    for xl in file8.readlines():
+        FStr.write(xl.rstrip('\n')+"*")   #在StringIO的实例用write写入内存   用read()是读不到的
+
+
+print(FStr.getvalue()) #获取写到内存中的数据
+
+with open(path1[0],"a+",encoding="utf-8") as file9:
+    for op in FStr.getvalue().split("*"):
+        file9.write(op+'\n')
+
+FStr.close()
+
+
+FStry = StringIO('Hello!\nHi!\nGoodbye!')
+
+SF = FStry.readlines()
+for Hr in SF:
+    print(Hr)
+
+FStry.close()
+
+
+'''ByteIO   StringIO操作的只能是str，如果要操作二进制数据，就需要使用BytesIO。'''
+
+# 写
+Bf = BytesIO()
+print(Bf.write("中文".encode("utf-8")))
+
+print(Bf.getvalue())
+
+Bf.close()
+
+#读  b'\xe4\xb8\xad\xe6\x96\x87'
+
+BI = BytesIO(b'\xe4\xb8\xad\xe6\x96\x87')
+print(BI.read().decode(encoding='utf-8'))
+print(BI.getvalue().decode(encoding='utf-8'))
+print(BI.read(),BI.getvalue())
+BI.close()
+
