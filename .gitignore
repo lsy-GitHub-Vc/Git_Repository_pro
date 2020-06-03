@@ -2,5 +2,4 @@
 *.idea
 #忽略编译文件.pyc
 *.pyc
-#忽略workspace.xml(不知道行不行)
-*space.xml
+
