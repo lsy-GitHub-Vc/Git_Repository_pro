@@ -28,8 +28,8 @@ def write(pc):
 def read(pc):
     print("启动读的子进程--%s"%(os.getpid()))
     while True:  #出啊过来的数据是一个内存地址 无法确定长度  所以只能用死循环读取 读完后调用    pr.terminate() 强制杀死
-        print("value = %s"%(pc.get(True)))
-    print("结束读的子进程--%s"%(os.getpid()))
+        print("value = %s"%(pc.get(True)))  #每次循环读一数据
+        print("结束读的子进程--%s"%(os.getpid()))
 
 if __name__=="__main__":
     print("父进程启动")
@@ -68,3 +68,52 @@ if __name__=="__main__":
 
 
 
+'''子进程：很多时候，子进程并不是自身，而是一个外部进程。我们创建了子进程后，还需要控制子进程的输入和输出。
+
+subprocess模块可以让我们非常方便地启动一个子进程，然后控制其输入和输出。
+
+下面的例子演示了如何在Python代码中运行命令nslookup www.python.org，这和命令行直接运行的效果是一样的'''
+
+import subprocess
+
+print('$ nslookup www.python.org')
+r = subprocess.call(['nslookup', 'www.python.org'])   #nslookup  这个是运行命令吧   类似打开应用吧  反正就是规定一个子进程的功能吧
+print('Exit code',r)
+
+#结果：
+# $ nslookup www.python.org
+# Server:		192.168.19.4
+# Address:	192.168.19.4#53
+#
+# Non-authoritative answer:
+# www.python.org	canonical name = python.map.fastly.net.
+# Name:	python.map.fastly.net
+# Address: 199.27.79.223
+#
+# Exit code: 0
+
+'''如果子进程还需要输入，则可以通过communicate()方法输入：'''
+print('$ nslookup')
+p = subprocess.Popen(['nslookup'],stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+output,err = p.communicate(b'set q=mx\npython.org\nexit\n')
+print(output.decode(encoding='gbk'))
+print('Exit code:',p.returncode)
+
+
+
+#上面的代码相当于在命令行执行命令nslookup，然后手动输入： set q=mx
+#                                                       python.org
+#                                                       exit
+
+# $ nslookup
+# 默认服务器:  bogon
+# Address:  192.168.43.1
+#
+# > > 服务器:  bogon
+# Address:  192.168.43.1
+#
+# python.org	MX preference = 50, mail exchanger = mail.python.org
+# >
+# Exit code: 0
+
+#说实话不太懂

@@ -21,7 +21,7 @@ def run(nu):
     print("子线程(%s)启动"%(threading.current_thread().name))
     #功能体
     global num
-    for i in range(1000000):
+    for i in range(100):
         '''
         #加锁
         lock.acquire()
