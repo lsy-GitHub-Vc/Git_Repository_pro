@@ -14,6 +14,7 @@ Python的multiprocessing模块不但支持多进程，其中managers子模块还
 
 import random, time, queue
 from multiprocessing.managers import BaseManager
+from multiprocessing import  freeze_support
 
 # 发送任务的队列:
 task_queue = queue.Queue()
@@ -24,29 +25,52 @@ result_queue = queue.Queue()
 class QueueManager(BaseManager):
     pass
 
+
+def task_q():
+    return task_queue
+
+def result_q():
+    return result_queue
+
+
 # 把两个Queue都注册到网络上, callable参数关联了Queue对象:
 # 请注意，当我们在一台机器上写多进程程序时，创建的Queue可以直接拿来用，但是，在分布式多进程环境下，
 # 添加任务到Queue不可以直接对原始的task_queue进行操作，那样就绕过了QueueManager的封装，
 # 必须通过manager.get_task_queue()获得的Queue接口添加。
-QueueManager.register('get_task_queue', callable=lambda: task_queue)
-QueueManager.register('get_result_queue', callable=lambda: result_queue)
-# 绑定端口5000, 设置验证码'abc':
-manager = QueueManager(address=('', 5000), authkey=b'abc')
-# 启动Queue:
-manager.start()
-# 获得通过网络访问的Queue对象:
-task = manager.get_task_queue()
-result = manager.get_result_queue()
-# 放几个任务进去:
-for i in range(10):
-    n = random.randint(0, 10000)
-    print('Put task %d...' % n)
-    task.put(n)
-# 从result队列读取结果:
-print('Try get results...')
-for i in range(10):
-    r = result.get(timeout=10)
-    print('Result: %s' % r)
-# 关闭:
-manager.shutdown()
-print('master exit.')
+
+def win():
+# QueueManager.register('get_task_queue', callable=lambda: task_queue)   # 报错 _pickle.PicklingError: Can't pickle <function <lambda> at 0x00000148CDCD21E0>: attribute lookup <lambda> on __main__ failed
+# QueueManager.register('get_result_queue', callable=lambda: result_queue)    #在win10环境下，pickle模块不能序列化lambda函数，所以需要自定义要使用的函数，而不用lambda函数
+
+    QueueManager.register('get_task_queue',callable=task_q)
+    QueueManager.register('get_result_queue',callable=result_q)
+
+    # 绑定端口5000, 设置验证码'abc':
+    manager = QueueManager(address=('127.0.0.1', 5000), authkey='abc'.encode())
+    # 启动Queue:
+    manager.start()
+    try:
+        # 获得通过网络访问的Queue对象:
+        task = manager.get_task_queue()
+        result = manager.get_result_queue()
+        # 放几个任务进去:
+        for i in range(10):
+            n = random.randint(0, 10000)
+            print('Put task %d...' % n)
+            task.put(n)
+        # 从result队列读取结果:
+        print('Try get results...')
+        for i in range(10):
+            r = result.get(timeout=10)
+            print('Result: %s' % r)
+    except Exception as e:
+        print("*********"+e+"*********")
+    finally:
+        # 关闭:
+        manager.shutdown()
+        print('master exit.')
+
+if __name__ ==  '__main__':
+    #Windows可能有问题加这个缓解一下
+    freeze_support()
+    win()
