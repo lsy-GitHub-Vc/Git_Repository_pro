@@ -4,7 +4,7 @@
 #Author:lsy
 
 
-from collections import namedtuple,deque,defaultdict,OrderedDict
+from collections import namedtuple,deque,defaultdict,OrderedDict,ChainMap,Counter
 
 
 '''namedtuple'''
@@ -20,7 +20,9 @@ p = point(1,2)
 print(p.x,p.y)
 
 '''
-namedtuple是一个函数，它用来创建一个自定义的tuple对象，并且规定了tuple元素的个数，并可以用属性而不是索引来引用tuple的某个元素。
+namedtuple
+
+是一个函数，它用来创建一个自定义的tuple对象，并且规定了tuple元素的个数，并可以用属性而不是索引来引用tuple的某个元素。
 
 这样一来，我们用namedtuple可以很方便地定义一种数据类型，它具备tuple的不变性，又可以根据属性来引用，使用十分方便。
 
@@ -68,3 +70,26 @@ print(list(od.keys()))
 
 #OrderedDict可以实现一个FIFO（先进先出）的dict，当容量超出限制时，先删除最早添加的Key：
 
+
+
+'''ChainMap:
+
+ChainMap可以把一组dict串起来并组成一个逻辑上的dict。ChainMap本身也是一个dict，但是查找的时候，
+会按照顺序在内部的dict依次查找。
+
+什么时候使用ChainMap最合适？举个例子：应用程序往往都需要传入参数，参数可以通过命令行传入，可以通过环境变量传入，
+还可以有默认参数。我们可以用ChainMap实现参数的优先级查找，即先查命令行参数，如果没有传入，再查环境变量，如果没有，就使用默认参数。
+
+下面的代码演示了如何查找user和color这两个参数：'''
+
+
+
+'''Counter: Counter是一个简单的计数器，例如，统计字符出现的个数：'''
+
+c = Counter()
+for cp in 'programming':
+    c[cp] = c[cp] + 1
+
+print(c)  #Counter({'r': 2, 'g': 2, 'm': 2, 'p': 1, 'o': 1, 'a': 1, 'i': 1, 'n': 1})
+
+# Counter实际上也是dict的一个子类，上面的结果可以看出每个字符出现的次数。
