@@ -21,15 +21,16 @@ from gevent import monkey
 monkey.patch_all()
 
 def seversocket(port):
-    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM) #socket.SOCK_STREAM 这个表示传输协议用的是TCP   socket.SOCK_DGRAM指的是UDP
     sock.bind(("",port))    #套接字绑定IP和端口
-    sock.listen(10)         #进行TCP监听
+    sock.listen(10)         #进行TCP监听  如果是UDP类型的话是不需要listen()监听的 而是直接接收来自任何客户端的数据
     while True:
         conn,addr = sock.accept()  #接受TCP连接，并返回新的套接字与IP地址
+        #data , addr = sock.recvfrom(1024) #UDP的类型  ecvfrom()方法返回数据和客户端的地址与端口，这样，服务器收到数据后，直接调用sendto()就可以把数据用UDP发给客户端
         print("客户端访问中，地址：",addr,conn)
         gevent.spawn(sever_data_feedback,conn)
-
-def sever_data_feedback(conn):
+        #sock.sendto('UDP返回数据')  #UDP类型返回数据
+def sever_data_feedback(conn):  #UDP类型 是要用sock这个注册实例的
     try:
         while True:
             data = conn.recv(1024) #把接受的数据实例化

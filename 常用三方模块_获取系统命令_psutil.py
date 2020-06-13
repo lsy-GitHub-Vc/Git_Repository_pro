@@ -50,5 +50,59 @@ print(psutil.disk_io_counters())#磁盘IO  sdiskio(read_count=3769862, write_cou
 #可以看到，磁盘'C:'的总容量是64424505344 = 64 GB，使用了77.4%。文件格式是NTFS，opts中包含rw表示可读写，journaled表示支持日志。
 
 
+'''获取网络信息'''
+#psutil可以获取网络接口和网络连接信息：
+print(psutil.net_io_counters()) #获取网络读写字节/包的个数  snetio(bytes_sent=2624082, bytes_recv=54685829, packets_sent=23147, packets_recv=42934, errin=0, errout=0, dropin=0, dropout=0)
+print(psutil.net_if_addrs()) #获取网络接口信息
+print(psutil.net_if_stats()) #获取网络接口状态
+
+print(psutil.net_connections())#获取当前网络连接信息
+# 你可能会得到一个AccessDenied错误，原因是psutil获取信息也是要走系统接口，而获取网络连接信息需要root权限，这种情况下，
+# 可以退出Python交互环境，用sudo重新启动：
+
+# $ sudo python3
+# Password: ******
+# Python 3.8 ... on darwin
+# Type "help", ... for more information.
+# >>> import psutil
+# >>> psutil.net_connections()
 
 
+'''获取进程信息'''
+#通过psutil可以获取到所有进程的详细信息：
+print(psutil.pids()) #获取进程id
+print(psutil.Process(12740))  #获取指定进程ID=12740
+print(psutil.Process(12740).name())#获取该进程名
+print(psutil.Process(12740).exe())#获取该进程exe的路径
+print(psutil.Process(12740).cwd())#获取该进程工作目录
+print(psutil.Process(12740).cmdline())#获取该进程启动的命令行
+print(psutil.Process(12740).ppid()) #父进程id
+print(psutil.Process(12740).parent())#父进程
+print(psutil.Process(12740).children())#子进程列表
+print(psutil.Process(12740).status())#进程状态
+print(psutil.Process(12740).username())#进程用户名
+print(psutil.Process(12740).create_time())#进程创建时间
+print(psutil.Process(12740).cpu_times())#进程使用cpu的时间
+print(psutil.Process(12740).memory_info())#进程使用的cpu
+print(psutil.Process(12740).open_files())#进程打开的文件
+print(psutil.Process(12740).connections())#进程相关的网络连接
+print(psutil.Process(12740).num_threads())#进程的线程数量
+print(psutil.Process(12740).threads())#进程所有的线程信息
+print(psutil.Process(12740).environ())#进程的环境变量
+#print(psutil.Process(12740).terminate())#结束进程
+
+'''
+和获取网络连接类似，获取一个root用户的进程需要root权限，启动Python交互环境或者.py文件时，需要sudo权限。
+
+psutil还提供了一个test()函数，可以模拟出ps命令的效果：
+'''
+
+print(
+    psutil.test()
+)
+
+'''
+psutil使得Python程序获取系统信息变得易如反掌。
+
+psutil还可以获取用户信息、Windows服务等很多有用的系统信息，
+'''
