@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-
-#Author:lsy
-
+#@time:
+#@Author:lsy
+#@file:SQLAlchemy
+#@function:-----------
 '''SQLlte'''
 
 '''

@@ -56,15 +56,15 @@ E:\python37\Lib\site-packages\pymysql\cursors.py:170: Warning: (1366, "Incorrect
 
 所以最好安装mysql-connector-python驱动 将数据库驱动改为mysqlconnector
 '''
-sqlconn = create_engine('mysql+mysqlconnector://root:root@localhost:3306/study')
+sqlconn = create_engine('mysql+mysqlconnector://root:root@localhost:3306/study')  #创建一个引擎  engine(引擎)
 
-#创建DBSession类型(其实就是创建一个会话对象吧)
+#创建DBSession类型(其实就是创建一个会话对象)
 DBSession = sessionmaker(bind=sqlconn)
 
 #以上代码完成SQLAlchemy的初始化和具体每个表的class定义。如果有多个表，就继续定义其他class
 #由于有了ORM，我们向数据库表中添加一行记录，可以视为添加一个User对象：
 
-#创建session对象
+#创建session对象  即实例化对象
 session = DBSession()
 
 '''插入数据'''
