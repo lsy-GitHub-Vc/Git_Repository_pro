@@ -2,5 +2,10 @@
 # -*- coding: utf-8 -*-
 #@time:
 #@Author:lsy
-#@file: interview
+#@file:
 #@function:-----------
+
+
+import pymysql
+
+pymysql.install_as_MySQLdb()  #引进模块和进行配置

@@ -1,0 +1,2 @@
+1、启动本地的Django服务
+    同manage.py一级下：python manage.py runserver 0.0.0.0:8000

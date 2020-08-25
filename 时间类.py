@@ -7,7 +7,9 @@ for i in range(10000):
     sum +=i
 
 #print(time.clock())
-print(time.perf_counter())  #程序执行所需时间
+print(time.perf_counter())  #程序执行所需时间(系统执行时间)
+
+time.process_time()  # 返回进程运行时间
 
 #时间戳
 print(time.time()) #1591341315.1846259

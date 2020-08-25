@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Study</title>
+
+</head>
+    {% load  endeavor_filtertags %}
+    <body>
+    <h1> {{DUY}} </h1>
+
+        <p>列表取值:  {{varlist}}</p>
+        <p>列表取值:  {{varlist.0}}</p>
+        <!-- ss-->
+        <p>字典取值：  {{vardict}}</p>
+        <!-- 过滤器    语法：变量名 | 过滤器：可选参数 -->
+       <!--<p>字典取值：  {{vardict.name|first|upper}}</p>   &lt;!&ndash;首字母大写   M-&ndash;&gt;   -->
+       <!--<p>字典取值：  {{vardict.name|title}}</p>   &lt;!&ndash;标题化  单词首字母大写-&ndash;&gt;-->
+       <!--addslashes : 添加反斜杠到任何反斜杠、单引号或者双引号前面。    -->
+       <!--date : 按指定的格式字符串参数格式化 date 或者 datetime 对象   -->
+       <!--length : 返回变量的长度。-->
+
+        <!--default: 为变量提供一个默认值  当views传的值为false时-->
+
+       <!--0  0.0  False  0j  ""  []  ()  set()  {}  None   这些值都是被判断为False的 -->
+       <p>字典取值：  {{vardict.name|default:"默认值"}}</p>   <!--标题化  单词首字母大写--->
+        <!--filesizeformat-->
+    <!--以更易读的方式显示文件的大小（即'13 KB', '4.1 MB', '102 bytes'等）。字典返回的是键值对的数量，集合返回的是去重后的长度。-->
+       <p>字典取值：  {{varlist|filesizeformat}}</p>   <!--为啥我查的都是大小-->
+
+        <!--date: 根据给定格式对一个日期变量进行格式化。格式 Y-m-d H:i:s返回 年-月-日 小时:分钟:秒 的格式时间。-->
+        <!--<p>datetime格式化：{{time|date:"Y-m-d"}}</p>-->
+
+        <!--truncatechars: 如果字符串包含的字符总个数多于指定的字符数量，那么会被截断掉后面的部分 截断的字符串将以 ... 结尾。-->
+        <p>字典取值：  {{vardict.name|truncatewords:"1"}}</p>  <!--这个将显示变量的前1个词。 mr ...-->
+
+<!--{#   safe   将字符串标记为安全，不需要转义。要保证 views.py 传过来的数据绝对安全，才能用 safe。和后端 views.py 的 mark_safe #}-->
+<!--{#  效果相同。Django 会自动对 views.py 传到HTML文件中的标签语法进行转义，令其语义失效。加 safe 过滤器是告诉 Django 该数据是安全的，#}-->
+<!--{#    不必对其进行转义，可以让该数据语义生效。#}-->
+        <p>链接： {{url|safe }} </p>
+
+        <!--if/else 标签:    就用正常的判断标准就行了 -->
+
+        <ul>
+            {%if score >= 90 and socre <= 100 %}
+                优秀
+            {%elif score >= 70 and score < 90 %}
+                良好
+            {%elif score >= 60 and score < 70 %}
+                及格
+    {#        {% else %}   <!--执行其他函数时 score也会接到一个空置 是False类型 会导致else 下的值一直在打印 我也不知道咋避免 先用下面的强校验吧-->#}
+            {%elif score >= 0 and score < 60 %}
+                加油吧 不及格
+            {% endif %}
+        </ul>
+        <ul>
+            <!--for 迭代-->
+            {%for itr in iter  %}
+                {{forloop.counter0 }}
+                <li>{{ itr }}</li>
+            {%endfor %}
+        </ul>
+
+<!--{#    在 {% for %} 标签里可以通过 {{forloop}} 变量获取循环序号。 #}-->
+<!--{#    forloop.counter: 顺序获取循环序号，从 1 开始计算 #}-->
+<!--{#    forloop.counter0: 顺序获取循环序号，从 0 开始计算 #}-->
+<!--{#    forloop.revcounter: 倒叙获取循环序号，结尾序号为 1 #}-->
+<!--{#    forloop.revcounter0: 倒叙获取循环序号，结尾序号为 0 #}-->
+<!--{#    forloop.first（一般配合if标签使用）: 第一条数据返回 True，其他数据返回 False #}-->
+<!--{#    forloop.last（一般配合if标签使用）: 最后一条数据返回 True，其他数据返回 False #}-->
+
+        <ul>
+        <!--遍历字典：  .items函数  这些都和python一样的-->
+            {%for k,v in dic.items  %}
+                <li>{{k}}   :     {{v}}</li>
+            {%endfor %}
+        </ul>
+
+        <!-- empty 从句：在循环为空的时候执行（即 in 后面的参数布尔值为 False -->
+        <ul>
+            {%for em in emptys %}
+                {{forloop.counter0}}
+            {%empty %}
+                空空入也...
+            {% endfor %}
+        </ul>
+    <!--ifequal/ifnotequal 标签-->
+
+    <!--ifequal 标签比较两个值，当他们相等时，显示在  ifequal  和 endifequal  之中所有的值。 例：-->
+
+    <!--{% ifequal section sitenews %}  &lt;!&ndash; 这是比较 section 和 sitenews 两个变量是否相等&ndash;&gt;-->
+        <!--<h1>Site News</h1>-->
+    <!--{% else %}-->
+        <!--<h1>No News Here</h1>-->
+    <!--{% endifequal %}-->
+
+    <!--include 标签  允许在模板中包含其它的模板的内容。-->
+    {# {include "new.html"}   导入模板 new.html   这个注释比上面的猛  上面那种注释不了引用 #}
+
+    <!--csrf_token-->
+<!--csrf_token 用于form表单中，作用是跨站请求伪造保护。-->
+
+<!--如果不用｛% csrf_token %｝标签，在用 form 表单时，要再次跳转页面会报403权限错误。-->
+
+<!--用了｛% csrf_token %｝标签，在 form 表单提交数据时，才会成功。-->
+
+<!--解析：-->
+
+<!--首先，向浏览器发送请求，获取登录页面，此时中间件 csrf 会自动生成一个隐藏input标签，该标签里的 value 属性的值是一个随机的字符串，-->
+   <!--用户获取到登录页面的同时也获取到了这个隐藏的input标签。#}-->
+
+<!--然后，等用户需要用到form表单提交数据的时候，会携带这个 input 标签一起提交给中间件 csrf，原因是 form 表单提交数据时，-->
+    <!--会包括所有的 input 标签，中间件 csrf 接收到数据时，会判断，这个随机字符串是不是第一次它发给用户的那个，如果是，-->
+    <!--则数据提交成功，如果不是，则返回403权限错误。-->
+
+    <p> 自定义过滤器：{{temp|filter_1:22 }} </p>
+    <p> 自定义标签返回当前的时间：{% tags_1 "%Y-%m-%d %H:%M:%S" %} </p>
+    <p> 自定义标签返回当前的时间：{% tags_2 ('xxx','ddd') %} </p>
+
+
+    <!--模板继承  用到的时候再看吧 现在没心情-->
+    <!--标签 block...endblock: 父模板中的预留区域，该区域留给子模板填充差异性的内容，不同预留区域名字不能相同。-->
+{#    {% block 名称 %}#}
+{#    预留给子模板的区域，可以设置设置默认内容#}
+{#    {% endblock 名称 %}#}
+
+    <!--子模板  子模板使用标签 extends 继承父模板-->
+{#    {% extends "父模板路径"%} #}
+
+
+    </body>
+</html>

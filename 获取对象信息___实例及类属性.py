@@ -4,8 +4,6 @@
 #Author:lsy
 
 
-
-
 #基本类型我们可以用ttype()判断，那么一个对象属性我们怎么去判断呢我们用types
 import types
 def fn():
@@ -88,8 +86,8 @@ print(po())
 
 #一个正确的用法的例子如下：
 # def readImage(fp):
-#     if hasattr(fp, 'read'):  传入一个数据流 request
-#         return readData(fp)  返回一个读后的数据流 response  （应该是吧）
+#     if hasattr(fp, 'read'):  #传入一个数据流 request
+#         return readData(fp)  #返回一个读后的数据流 response  （应该是吧）
 #     return None
 
 '''
